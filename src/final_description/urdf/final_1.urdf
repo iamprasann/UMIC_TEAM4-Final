@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot
-  name="bot1">
+  name="final_description">
 
   <material name="black">
     <color rgba="0.0 0.0 0.0 1.0"/>
@@ -73,7 +73,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://final_description/meshes/base_link.STL" scale="1 1 1"/>
+          filename="package://final_description/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -113,17 +113,6 @@
         <mesh
           filename="package://final_description/meshes/B.STL" />
       </geometry>
-        <!--surface>
-         <bounce>
-          <restitution_coefficient>0.0</restitution_coefficient>
-          <threshold>1000000</threshold>
-         </bounce>
-         <contact>
-          <ode>
-           <max_vel>0</max_vel>
-          </ode>
-         </contact>
-        </surface-->
     </collision>
   </link>
   <joint
@@ -358,10 +347,7 @@
     <!--safety_controller
       k_velocity="0" /-->
   </joint>
-
-### <!--removed cameras--> ###
-
-  <!--link
+  <link
     name="RC">
     <inertial>
       <origin
@@ -404,7 +390,7 @@
     type="fixed">
     <origin
       xyz="0.03 -0.23 0.125"
-      rpy="1.5707963267949 1.57 3.14" />
+      rpy="1.5707963267949 0 1.5707963267949" />
     <parent
       link="base_link" />
     <child
@@ -413,8 +399,8 @@
       xyz="0 0 0" />
     <safety_controller
       k_velocity="0" />
-  </joint-->
-  <!--link
+  </joint>
+  <link
     name="LC">
     <inertial>
       <origin
@@ -456,8 +442,8 @@
     name="LCJ"
     type="fixed">
     <origin
-      xyz="0.03 0.20 0.125"
-      rpy="0 0 -4.71" />
+      xyz="0.03 0.23 0.125"
+      rpy="-1.5707963267949 0 -1.5707963267949" />
     <parent
       link="base_link" />
     <child
@@ -466,7 +452,7 @@
       xyz="0 0 0" />
     <safety_controller
       k_velocity="0" />
-  </joint-->
+  </joint>
   <link
     name="RA">
     <inertial>
@@ -556,17 +542,6 @@
         <mesh
           filename="package://final_description/meshes/RF.STL" />
       </geometry>
-        <surface>
-         <bounce>
-          <restitution_coefficient>0.9</restitution_coefficient>
-          <threshold>0</threshold>
-         </bounce>
-         <contact>
-          <ode>
-           <max_vel>10</max_vel>
-          </ode>
-         </contact>
-        </surface>
     </collision>
   </link>
   <joint
@@ -585,7 +560,7 @@
       lower="-1.5"
       upper="0.2"
       effort="100"
-      velocity="0.15" />
+      velocity="0.125" />
     <!--safety_controller
       k_velocity="0" /-->
   </joint>
@@ -678,17 +653,6 @@
         <mesh
           filename="package://final_description/meshes/LF.STL" />
       </geometry>
-        <surface>
-         <bounce>
-          <restitution_coefficient>0.9</restitution_coefficient>
-          <threshold>0</threshold>
-         </bounce>
-         <contact>
-          <ode>
-           <max_vel>10</max_vel>
-          </ode>
-         </contact>
-        </surface>
     </collision>
   </link>
   <joint
@@ -707,9 +671,7 @@
       lower="-0.34"
       upper="1.36"
       effort="100"
-      velocity="0.15" />
-    <mimic
-      joint="RFJ" multiplier="-1" offset="0"/>
+      velocity="0.125" />
     <!--safety_controller
       k_velocity="0" /-->
   </joint>
@@ -814,7 +776,7 @@
     type="fixed">
     <origin
       xyz="0.01 0.275 0"
-      rpy="-1.57 0 0" />
+      rpy="0 0 0" />
     <parent
       link="F" />
     <child
@@ -950,82 +912,32 @@
     </sensor>
   </gazebo>
 
-  <!--mimic plugin-->
-   <mimic_joint_plugin_gazebo
-      name_prefix="LFJ"
-      parent_joint="RFJ" mimic_joint="LFJ"
-      multiplier="-1.0"
-      max_effort="100.0" />
-   <gazebo>
-    <plugin name="mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
-     <joint>RFJ</joint>
-     <mimicJoint>LFJ</mimicJoint>
-     <multiplier>-1</multiplier>
-     <offset>0</offset>
-     <maxEffort>100.0</maxEffort>
-    </plugin>
-   </gazebo> 
-	
-	<!--camera plugins-->
-  <gazebo reference="FC">
-    <material>Gazebo/Green</material>
-    <sensor type="camera" name="camera1">
-      <update_rate>10.0</update_rate>
-      <camera name="front_cam">
-        <horizontal_fov>1.3962634</horizontal_fov>
-        <image>
-          <width>800</width>
-          <height>800</height>
-          <format>R8G8B8</format>
-        </image>
-        <clip>
-          <near>0.02</near>
-          <far>300</far>
-        </clip>
-      </camera>
-      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>0.0</updateRate>
-        <cameraName>mybot/camera1</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera</frameName>
-        <hackBaseline>0.07</hackBaseline>
-        <distortionK1>0.0</distortionK1>
-        <distortionK2>0.0</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>0.0</distortionT1>
-        <distortionT2>0.0</distortionT2>
-      </plugin>
-    </sensor>
-  </gazebo>
-   
 
   <!--Physical parameters-->
     <gazebo reference="FLW">
-      <mu1 value="10000000.0"/>
-      <mu2 value="10000000.0"/>
+      <mu1 value="200.0"/>
+      <mu2 value="100.0"/>
       <kp value="10000000.0" />
       <kd value="1.0" />
     </gazebo>  
 
     <gazebo reference="FLW">
-      <mu1 value="1000000.0"/>
-      <mu2 value="1000000.0"/>
+      <mu1 value="200.0"/>
+      <mu2 value="100.0"/>
       <kp value="10000000.0" />
       <kd value="1.0" />
     </gazebo>  
 
     <gazebo reference="FLW">
-      <mu1 value="1000000.0"/>
-      <mu2 value="1000000.0"/>
+      <mu1 value="200.0"/>
+      <mu2 value="100.0"/>
       <kp value="10000000.0" />
       <kd value="1.0" />
     </gazebo>  
 
     <gazebo reference="FLW">
-      <mu1 value="1000000.0"/>
-      <mu2 value="1000000.0"/>
+      <mu1 value="200.0"/>
+      <mu2 value="100.0"/>
       <kp value="10000000.0" />
       <kd value="1.0" />
     </gazebo>  
